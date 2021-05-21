@@ -1,0 +1,93 @@
+// Package.json
+npm install -y    
+
+// Dependencies
+npm install react 
+npm install react-dom
+
+// Development dependencies
+//Dev_Dependencies
+    // babel
+npm install --save-dev @babel/core 
+npm install --save-dev @babel/preset-env 
+npm install --save-dev @babel/preset-react 
+npm install --save-dev babel-loader
+    // Webpack
+npm install --save-dev webpack 
+npm install --save-dev webpack-cli 
+npm install --save-dev html-webpack-plugin
+    // Dev server
+npm install --save-dev webpack-dev-server
+    // Not really needed and should be deprecated soon ... | use fast refresh instead
+npm install --save-dev react-hot-loader 
+
+    //  
+npm install --save-dev style-loader
+npm install --save-dev css-loader
+
+
+EDIT babel.config.json
+
+{
+   "presets": [
+       "@babel/preset-env"
+   ]
+}
+
+ "dev": "webpack --mode development --port 3000"
+
+-----------------------------------------------------------------------------------------------------
+// Webpack configuration minimal, --> ne pas oublier de créer le fichier index.html dans public !
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+    entry: {
+        index: path.resolve(__dirname,"src","index.js")
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: "babel-loader"
+            }
+        ]
+    },
+    output: {
+        path: path.resolve(__dirname,"dist"), // create a dist folder and index.bundle.js inside it
+        filename: "index.bundle.js"
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname,"public","index.html") // create public/index.html at root of the project
+        })
+    ],
+};
+
+---> un bundle sera crée dans dist/index.html
+
+-------------------------------------------------------------------------------------------------------------
+Mise en place du serveur 
+
+"scripts": {
+    "dev": "webpack --mode development",
+    "start": "webpack serve --open 'chrome'",
+  }
+
+
+
+
+// WEBPACK YOUTUBE TUTS 30MIN EACH PROJECTS
+https://www.youtube.com/watch?v=X6GpRxu4q_s&list=PLpc_YvcwbxaTqVUVgWQhISClv_mniIm2o
+
+// WEBPACK AND REACT FROM SCRATCH
+https://dev.to/riyanegi/setting-up-webpack-5-with-react-and-babel-from-scratch-2021-271l
+
+// REACT FAST REFRESH INSTALLATION
+https://dev.to/workingeeks/speeding-up-your-development-with-webpack-5-hmr-and-react-fast-refresh-of8
+https://javascript.plainenglish.io/react-fast-refresh-the-new-react-hot-reloader-652c6645548c
+https://javascript.plainenglish.io/what-is-react-fast-refresh-f3d1e8401333
+
+// WARN DEPRECATED mais pas trop grave
+https://www.npmjs.com/package/webpack-plugin-chokidar
