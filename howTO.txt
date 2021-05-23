@@ -72,16 +72,75 @@ Mise en place du serveur
 
 "scripts": {
     "dev": "webpack --mode development",
-    "start": "webpack serve --open 'chrome'",
+    "start": "webpack serve --open ",
   }
 
+------------------------------------------------------------------------------
+npm install react-router-dom
+-> Manage routes by wrapping <App/> container within index.js file
+
+------------------------------------------------------------------------------
+
+// Support Lazy Loading / Code Splitting
+    // modify the output 
+        output: {
+            path: path.resolve(__dirname,"dist"), // create a dist folder and index.bundle.js inside it
+            chunkFilename: 'scripts/[name].[fullhash:8].bundle.js',
+            filename: 'scripts/[name].[fullhash:8].bundle.js',
+            assetModuleFilename: 'bundleImages/[hash][ext][query]'
+        },
+
+browser tends to cache these bundles in case if you provide a new bundle it will use old cached files due 
+to the same name and that may cause an error, to save that we add hash, it changes if we update our codebase 
+so our end user will get the latest feature without worrying about anything.
+
+--------------------------------------------------------------------------------------------------
+// ADD environement variables
+npm install dotenv
+
+then create a .env at the root of the project 
+SECRET_KEY=abcd1234
+
+in a file :
+1) require('dotenv').config()
+2) process.env.SECRET_KEY
+
+----------------------------------------------------------------------------------------------------------
+
+// Errors like create react App
+npm install error-overlay-webpack-plugin --save-dev
+
+and in webpack.confg.json
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+
+plugins: [new ErrorOverlayPlugin()],
+
+----------------------------------------------------------------------------------------------------------
 
 
+// Utf-8 support ( to avoid some errors  -> like can’t recognize some patterns or tests) 
+npm i webpack-utf8-bom --save-dev
+
+Sources
+https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
+https://medium.com/@thejasonfile/using-dotenv-package-to-create-environment-variables-33da4ac4ea8f
+------------------------------------------------------------------------------------------------------------
+
+// Some stuffs to install
+$ npm install chalk (voir doc)
+
+// How to get rid of the warning,it just remove the warning while using unsafe methods but
+npx react-codemod rename-unsafe-lifecycles <path>
+
+
+// WEBPACK FONTS 
+https://www.robinwieruch.de/webpack-font/
 
 // WEBPACK YOUTUBE TUTS 30MIN EACH PROJECTS
 https://www.youtube.com/watch?v=X6GpRxu4q_s&list=PLpc_YvcwbxaTqVUVgWQhISClv_mniIm2o
 
 // WEBPACK AND REACT FROM SCRATCH
+https://medium.com/nerd-for-tech/webpack-react-optimised-from-scratch-da8f75024ba4
 https://dev.to/riyanegi/setting-up-webpack-5-with-react-and-babel-from-scratch-2021-271l
 
 // REACT FAST REFRESH INSTALLATION
@@ -91,3 +150,6 @@ https://javascript.plainenglish.io/what-is-react-fast-refresh-f3d1e8401333
 
 // WARN DEPRECATED mais pas trop grave
 https://www.npmjs.com/package/webpack-plugin-chokidar
+
+// MANAGE WARNING, WHY USING REACT STRIC MODE 
+https://medium.com/nmc-techblog/wait-youre-not-using-react-strictmode-a9713927a33b
