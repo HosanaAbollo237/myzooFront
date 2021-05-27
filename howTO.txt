@@ -16,6 +16,7 @@ npm install --save-dev babel-loader
 npm install --save-dev webpack 
 npm install --save-dev webpack-cli 
 npm install --save-dev html-webpack-plugin
+npm install --save-dev clean-webpack-plugin
     // Dev server
 npm install --save-dev webpack-dev-server
     // Not really needed and should be deprecated soon ... | use fast refresh instead
@@ -60,7 +61,10 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname,"public","index.html") // create public/index.html at root of the project
+            template: path.resolve(__dirname,"src","template.html") 
+            filename: 'index.html',
+            title: "Add a title if you want" 
+        
         })
     ],
 };
@@ -70,10 +74,12 @@ module.exports = {
 -------------------------------------------------------------------------------------------------------------
 Mise en place du serveur 
 
-"scripts": {
-    "dev": "webpack --mode development",
-    "start": "webpack serve --open ",
-  }
+  "scripts": {
+    "create": "webpack",
+    "dev": "webpack serve --mode development --open",
+    "build": "webpack serve --mode production --open",
+    "start": "webpack serve --open"
+  },
 
 ------------------------------------------------------------------------------
 npm install react-router-dom
@@ -107,7 +113,7 @@ in a file :
 
 ----------------------------------------------------------------------------------------------------------
 
-// Errors like create react App
+// App show errors like create-react-App
 npm install error-overlay-webpack-plugin --save-dev
 
 and in webpack.confg.json
@@ -121,10 +127,18 @@ plugins: [new ErrorOverlayPlugin()],
 // Utf-8 support ( to avoid some errors  -> like can’t recognize some patterns or tests) 
 npm i webpack-utf8-bom --save-dev
 
+
+// SOLVE ERRORS WITH PAGE REFRESH : CANNOT GET / ...
+Add to the devServer object : 
+historyApiFallback: true
+
+
 Sources
 https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
 https://medium.com/@thejasonfile/using-dotenv-package-to-create-environment-variables-33da4ac4ea8f
 ------------------------------------------------------------------------------------------------------------
+
+
 
 // Some stuffs to install
 $ npm install chalk (voir doc)
@@ -140,8 +154,10 @@ https://www.robinwieruch.de/webpack-font/
 https://www.youtube.com/watch?v=X6GpRxu4q_s&list=PLpc_YvcwbxaTqVUVgWQhISClv_mniIm2o
 
 // WEBPACK AND REACT FROM SCRATCH
+https://www.taniarascia.com/how-to-use-webpack/
 https://medium.com/nerd-for-tech/webpack-react-optimised-from-scratch-da8f75024ba4
 https://dev.to/riyanegi/setting-up-webpack-5-with-react-and-babel-from-scratch-2021-271l
+https://linguinecode.com/post/how-to-setup-webpack-dev-server-react-babel#setup-index-html
 
 // REACT FAST REFRESH INSTALLATION
 https://dev.to/workingeeks/speeding-up-your-development-with-webpack-5-hmr-and-react-fast-refresh-of8
@@ -153,3 +169,98 @@ https://www.npmjs.com/package/webpack-plugin-chokidar
 
 // MANAGE WARNING, WHY USING REACT STRIC MODE 
 https://medium.com/nmc-techblog/wait-youre-not-using-react-strictmode-a9713927a33b
+
+// DIFFERENCE PUBLICPATH 
+https://stackoverflow.com/questions/62991326/difference-between-publicpath-and-contentbase-in-webpac
+
+// Configure webpack api proxy
+https://www.robinwieruch.de/axios-jest
+https://stackoverflow.com/questions/64582934/webpack-devserver-historyapifallback
+https://flaviocopes.com/how-to-serve-react-from-same-origin/
+https://stackoverflow.com/questions/44365577/proxy-in-package-json-not-affecting-fetch-request/50118381
+https://stackoverflow.com/questions/35538472/webpack-dev-server-with-backend-api
+https://linguinecode.com/post/webpack-dev-server-proxy-api-calls-react
+
+    // trick to get around cors issues locally
+    https://itsopensource.com/how-to-serve-api-locally-with-webpack/
+
+    // to package.jsons add entry
+"proxy": "http://localhost:8080"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+    entry: {
+        index: path.resolve(__dirname,"src","index.js")
+    },
+    //devtool: 'inline-source-map',
+    devServer: {  
+      //  host: 'localhost', 
+       //inline: true,
+        contentBase: path.resolve(__dirname, 'dist'),
+        publicPath: 'http://localhost:80/myzoo/front/',
+        port: 9000,
+        proxy:{
+            '/api/animals':{
+                target: 'http://localhost:80/front/animals/',
+            }
+        },
+        historyApiFallback: true
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(js)$/,
+                exclude: /node_modules/,
+                use: "babel-loader"
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.(png|jpeg)$/i,
+                type: 'asset/resource'
+
+            },
+        ]
+    },
+    output: {
+        path: path.resolve(__dirname,'dist'), // create a dist folder and index.bundle.js inside it
+        //publicPath: path.join(__dirname, 'public'),
+        chunkFilename: 'scripts/[name].[fullhash:8].bundle.js',
+        filename: 'scripts/[name].[fullhash:8].bundle.js',
+        assetModuleFilename: 'bundleImages/[hash][ext][query]'
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname,"public","index.html") // create public/index.html at root of the project
+        })
+    ],
+};

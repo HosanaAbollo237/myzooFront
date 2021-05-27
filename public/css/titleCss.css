@@ -1,0 +1,24 @@
+
+h1{
+    font-family: 'Sigmar One', cursive;
+    src: url('../assets/fonts/SigmarOne-Regular.ttf') format('ttf'),
+    url('../assets/fonts/SigmarOne-Regular.ttf') format('ttf');
+    font-weight: 600;
+    font-style: normal;
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+    color: #ffffff;
+}
+
+h1.red{
+    background-color: red;
+}
+
+h1.green{
+    background-color: green;
+}
+
+h1.normal{
+    background-color: blue;
+}

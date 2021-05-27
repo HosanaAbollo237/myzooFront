@@ -1,42 +1,52 @@
 const path = require('path')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname,"src","index.js")
+        index: path.resolve(__dirname, 'src', 'index.js')
     },
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        compress: true,
-        port: 9000,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].build.js',
     },
     module: {
         rules: [
             {
-                test: /\.(js)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use: "babel-loader"
+                loader: 'babel-loader',
             },
             {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
             },
-            {
-                test: /\.(png|jpeg)$/i,
-                type: 'asset/resource'
-
+            {   test: /\.(?:ico|gif|png|jpg|jpeg)$/i,        
+                type: 'asset/resource',      
             },
-        ]
+            {        
+                test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,        
+                type: 'asset/resource',      
+            },
+        ],
     },
-    output: {
-        path: path.resolve(__dirname,"dist"), // create a dist folder and index.bundle.js inside it
-        chunkFilename: 'scripts/[name].[fullhash:8].bundle.js',
-        filename: 'scripts/[name].[fullhash:8].bundle.js',
-        assetModuleFilename: 'bundleImages/[hash][ext][query]'
+    mode: 'development',
+    devtool: 'inline-source-map', 
+    devServer: {
+      contentBase: path.resolve(__dirname, './dist'),
+      open: true, // open browser
+      hot: true, // Hot Module Replacement to updata only a part not the full page
+      port: 8080, 
+      historyApiFallback: true, //
+      compress: true,
     },
     plugins: [
+        new CleanWebpackPlugin(), // dist cleaner after update
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname,"public","index.html") // create public/index.html at root of the project
+            title: "My zoo app",
+            template: path.resolve(__dirname,'src','template.html'), // template file
+            filename: 'index.html' // template filename in dist/ folder
         })
-    ],
-};
+    ]
+
+}
