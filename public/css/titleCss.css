@@ -1,10 +1,13 @@
-
-h1{
-    font-family: 'Sigmar One', cursive;
-    src: url('../assets/fonts/SigmarOne-Regular.ttf') format('ttf'),
-    url('../assets/fonts/SigmarOne-Regular.ttf') format('ttf');
+@font-face {
+    font-family: 'Sigmar One';
+    src: url('../assets/fonts/SigmarOne-Regular.ttf') format('ttf');
     font-weight: 600;
     font-style: normal;
+}
+
+
+h1.title{
+    font-family: 'Sigmar One';
     text-align: center;
     height: 100px;
     line-height: 100px;

@@ -8,13 +8,13 @@ const NavBar = () => {
 
     return(
         <nav>
-            <img className="navImg" src={banderole} alt="" />
             <ul>
                 <li><NavLink to="/">Home</NavLink></li>
                 <li><NavLink to="/animals">Animals</NavLink></li>
                 <li><NavLink to="/continents">Continents</NavLink></li>
                 <li><NavLink to="/contact">Contact</NavLink></li>
             </ul>
+            <img className="navImg" src={banderole} alt="" />
         </nav>
     )
 }

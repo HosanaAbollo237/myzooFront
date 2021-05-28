@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import "../public/css/main.css"
+import "../public/css/app.css"
 import Site from './Containers/Site/Site'
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import {Switch, Route} from 'react-router-dom'
 import NavBar from '../../Components/UI/NavBar/NavBar'
+import {Switch, Route} from 'react-router-dom'
 import Park from './../Site/Park/Park'
 import Home from './Home/Home'
 import Footer from '../../Components/Footer/Footer'
@@ -12,7 +12,7 @@ import Contact from '../../Components/Contact/Contact'
 const Site = () => {
 
     return(
-        <>
+        <div className="site">
         <NavBar />
         <Switch>
             <Route exact path="/">
@@ -31,7 +31,8 @@ const Site = () => {
                 <Error />
             </Route>
         </Switch>
-    </>
+        <div className="miniSite"></div>
+    </div>
     )
 }
 
