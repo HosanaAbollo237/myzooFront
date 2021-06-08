@@ -1,0 +1,42 @@
+button{
+    border-radius: 100px;
+    padding: 15px 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+
+button.red{
+    background-color: red;
+}
+button.yellow{
+    background-color: yellow;
+}
+button.blue{
+    background-color: blue;
+}
+button.green{
+    background-color: green;
+}
+button.cyan{
+    background-color:cyan
+}
+button.darkcyan{
+    background-color:darkcyan
+}
+
+button.darkRed{
+    background-color: darkred;
+}
+
+button.greenYellow{
+    background-color:greenyellow;
+}
+button.indianRed{
+    background-color:indianred;
+}
+button.indigo{
+    background-color:indigo;
+}
+
+

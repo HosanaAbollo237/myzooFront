@@ -5,6 +5,7 @@ const Continents = () => {
     return(
         <div>
             <TitleH1>Page Continents</TitleH1>
+            
         </div>
     )
 }

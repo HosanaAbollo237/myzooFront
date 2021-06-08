@@ -1,0 +1,15 @@
+.animalWrapper{
+    display: flex;
+    flex-flow: row wrap;
+    
+}
+
+.animals{
+    display: flex;
+    display: inline-block; 
+    text-align: center;
+    margin-top: 3em;
+    width: 33%;
+    height: 150px;
+    margin: auto;  
+}
