@@ -16,7 +16,7 @@ const Animal = (props) => {
                     <h2>{props.id} - {props.nom}</h2>
                     <p>{props.description}</p>
                     <img src={props.imgSrc} alt="Image de l'animal" />
-                    <h3>Famille : <Button clic={() => props.filtrefamille(props.famille)}>{props.famille}</Button></h3>
+                    <h3>Famille : <Button clic={() => props.filtrefamille(props.familleId)}>{props.famille}</Button></h3>
                     <p>{props.familleDescription}</p>
                     {
                         props.continents.map(continent => {

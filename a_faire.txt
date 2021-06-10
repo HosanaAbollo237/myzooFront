@@ -1,3 +1,8 @@
 1) En back : generer le chemin complet de l'image de l'animal et l'envoyer au front 
     -> permet d'eviter de charger les images en front car en cas réel ça n'existe pas ..
 1bis) En front régler le probleme du cochon + system de grid ou flexbox + media queries 
+
+
+2bis) Vraiment revoir le design front 
+
+3bis) Probleme : double click lors du filtrage des animaux

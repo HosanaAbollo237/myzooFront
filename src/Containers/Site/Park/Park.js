@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import TitleH1 from '../../../Components/UI/TitleH1/TitleH1'
 import Animal from '../../../Components/Animal/Animal'
 import ParkCss from '../../../../public/css/ParkCss.css'
-
+import Button from '../../../Components/UI/Button/Button'
 import cochon from '../../../../public/assets/animals/cochon.png'
 import requin from '../../../../public/assets/animals/requin.png'
 import serpent from '../../../../public/assets/animals/serpent.png'
@@ -11,10 +11,12 @@ import crocodile from '../../../../public/assets/animals/crocodile.png'
 
 
 const Park = () => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [filtreFamille, setFamille] = useState(null);
+    const [filtreContinent, setContinent] = useState(null);
     let isDataSet = false;
 
-    
+    const prevData = useRef();
 
     const handleError = (res) => {
         if(!res.ok){
@@ -34,28 +36,56 @@ const Park = () => {
         console.log(propAnimalName + 'non trouvé')
     }
 
+    const loadData = () => {
+        if(!isDataSet){      
+            fetch(`http://localhost:80/myzoo/front/animals/`)
+            .then(handleError)   
+            .then(d => setData(Object.values(d)))
+            isDataSet = true
+        }   
+    }
+
+    const filtreFunc = () => {
+        const famille = filtreFamille ? filtreFamille : "-1";
+        const continent = filtreContinent ? filtreContinent : "-1";  
+        fetch(`http://localhost:80/myzoo/front/animals/${famille}/${continent}/`)
+        .then(handleError)   
+        .then(d => setData(Object.values(d)))
+    }
 
     useEffect(() => {
+        loadData() 
         findImg()
-        if(!isDataSet){       
-                fetch('http://localhost:80/myzoo/front/animals')
-                .then(handleError)   
-                .then(d => setData(Object.values(d)))
-                isDataSet = true
-        }
     },[]) 
 
-    const handleSelectionFamille = (libelleFamille) => {
-        console.log(libelleFamille)
+
+    
+    const handleSelectionFamille = (idFamille) => { 
+        setFamille(idFamille)
+        filtreFunc()
     }
 
     const handleSelectionContient = (idContinent) => {
-        console.log(idContinent)
+        setContinent(idContinent)
+        filtreFunc()
+
+    }
+
+    const handleResetFiltreFamille = () => {
+        setFamille(null)
+    }
+    const handleResetFiltreContinent = () => {
+        setContinent(null)
     }
     return(
         <>
             <TitleH1>Page du park</TitleH1>
-            <div>Page listant les animaux</div>
+            {
+                (filtreFamille || filtreContinent) && <span>Filtre : </span>
+            }
+            {filtreFamille && <Button clic={handleResetFiltreFamille}>{filtreFamille}</Button>}
+            {filtreContinent && <Button clic={handleResetFiltreContinent}>{filtreContinent}</Button>}
+
             <div className="AnimalWrapper">
             {
                 data && data.map(animal => 
@@ -66,6 +96,7 @@ const Park = () => {
                     description={animal.description}
                     famille={animal.famille.libelle}
                     familleDescription={animal.famille.description}
+                    familleId={animal.famille.idFamily}
                     continents={animal.continents}
                     imgSrc={findImg(animal.nom)}
                     filtrefamille={handleSelectionFamille}
